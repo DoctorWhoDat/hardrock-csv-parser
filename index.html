@@ -1,0 +1,57 @@
+<html>
+  <script src="papaparse.min.js"></script>
+  <head><title>CSV PARSER</title></head>
+  <body>
+    <h1>LA Cat Part for Fleetio Uploader</h1>
+    <input type="file" id="parts" style="width: 100%">
+
+    <h1 style='padding-top: 50px;'>Timesheet for Fleetio Uploader</h1>
+    <input type="file" id="timesheet" style="width: 100%">
+    <div id="output"></div>
+  </body>
+  <script>
+    document.getElementById('parts').addEventListener('change', function (e) {
+      let fr = new FileReader();
+
+      fr.onload = () => {
+        Papa.parse(fr.result, {
+          header: true,
+          complete: function(res) {
+            let headers = 'number,part_category_name,part_manufacturer_name,manufacturer_part_number,description,upc,unit_cost';
+            let output = [headers]
+            let csv = null;
+
+            res.data.forEach((row) => {
+              let cost = 0
+
+              if(Number(row['Discout Amount']) > 0) {
+                cost += Number(row['Discout Amount'])
+              }
+
+              cost += Number(row['Unit Price'])
+              cost = Math.round(cost * 100) / 100
+
+              if(!!row['Part Number']) {
+                let str = row['Part Number'] +',,' + 'CATERPILLAR,' + row['Part Number'] + ',' + row['Description'] + ',,' + cost
+                output.push(str)
+              }
+            })
+
+            document.getElementById('output').textContent = 'Finished Processing';
+            csv = "data:text/csv;charset=utf-8," + output.join('\n');
+
+            var encodedUri = encodeURI(csv);
+            var link = document.createElement("a");
+            link.setAttribute("href", encodedUri);
+            link.setAttribute("download", "fleetio-part-upload.csv");
+            document.body.appendChild(link);
+
+            link.click();
+          }
+        });
+      }
+
+      fr.readAsText(e.target.files[0]);
+    })
+  </script>
+</html>
