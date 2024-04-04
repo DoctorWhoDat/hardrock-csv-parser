@@ -11,50 +11,79 @@ License: MIT
   <head>
     <title>CSV PARSER</title>
     <style>
+      body {
+        font-family:Arial, Helvetica, sans-serif;
+      }
+      h1 {
+        text-align: center;
+      }
       input {
         background-color: #eee;
         width: 100%;
         padding: 5% 0% 5% 43%;
         cursor: pointer;
       }
+
+      .section {
+        margin: 5px;
+        box-shadow: 0 0 10px #dadada;
+        border-radius: 5px;
+        border: 1px solid #dadada;
+        padding: 5px;
+      }
     </style>
   </head>
   <body>
-    <h1>LA Cat Part for Fleetio</h1>
-    <h2>Instructions:</h2>
-    <h3>
-      Step 0: Download parts list from LA CAT by exporting<br>
-      Step 1: Drag file to grayed area below. It will automatically download the processed file.<br>
-      Step 2: <a href="https://secure.fleetio.com/37d9a0bcb2/imports/new?type=part_import" target="_blank">https://secure.fleetio.com/37d9a0bcb2/imports/new?type=part_import</a> (This will open in a new tab)<br>
-      Step 3: Click "Import Parts"<br>
-      Step 4: Drag the downloaded file to Fleetio's drop zone<br>
-      Step 5: Scroll all the way down to the button with the Green Check that says "Confirm 7 Matched"<br>
-      Step 6: Click Continue to review<br>
-      Step 7: Click process import (check the save mapping for future use to skip the mapping next time)<br>
-      Note: if the part already exists, it will produce an error log detailing which parts were already in the system. This is expected.
+    <div class="section">
+      <h1>LA Cat Parts for Fleetio</h1>
+      <h2>Instructions:</h2>
+      <h3>
+        Step 0: Download parts list from LA CAT by exporting as CSV (this is important, doing the other option will make the file UNREADABLE by this)<br>
+        Step 1: Drag file to grayed area below. It will automatically download the processed file.<br>
+        Step 2: <a href="https://secure.fleetio.com/37d9a0bcb2/imports/new?type=part_import" target="_blank">https://secure.fleetio.com/37d9a0bcb2/imports/new?type=part_import</a> (This will open in a new tab)<br>
+        Step 4: Drag the downloaded file to Fleetio's drop zone<br>
+        Step 5: Scroll all the way down to the button with the Green Check that says "Confirm 7 Matched"<br>
+        Step 6: Click Continue to review<br>
+        Step 7: Click process import (check the save mapping for future use to skip the mapping next time)<br>
+        Note: if the part already exists, it will produce an error log detailing which parts were already in the system. This is expected.
 
-    </h3>
-    <input type="file" id="parts">
-    <div id="output-parts"></div>
+      </h3>
+      <input type="file" id="parts">
+      <div id="output-parts"></div>
+    </div>
 
-    <h1>Timesheet for Fleetio</h1>
-    <h2>Instructions:</h2>
-    <h3>
-      Step 1: Download Labor Time Entries List (Or Saved Daily) from Fleetio <br>
-      Step 2: Drag file to grayed area below. It will automatically download the processed file.<br>
-      Step 3:
-    </h3>
-    <input type="file" id="timesheet">
-    <div id="output-timesheet"></div>
+    <div class="section">
+      <h1>Timesheet from Fleetio</h1>
+      <h2>Instructions:</h2>
+      <h3>
+        Step 1: Download Labor Time Entries List (Or Saved Daily) from Fleetio <br>
+        Step 2: Drag file to grayed area below. It will automatically download the processed file.<br>
+        Step 3: The output will be sorted by person, with the date, vehicle, and hours rounded to the nearest half hour.<br>
+        Note: It rounds 0-14 minutes down to the hour, 15-44 minutes to .5, and 45-59 as an additional hour
+      </h3>
+      <input type="file" id="timesheet">
+      <div id="output-timesheet"></div>
+    </div>
   </body>
   <script>
     function minutes_calc(minutes) {
-      return Math.round(minutes/15)*15;
+      return Math.round(minutes/30)*0.5;
     }
 
     function get_date(str) {
       return str.match(/\d{1,2}\/\d{1,2}\/\d{4}/)[0];
     }
+
+    function download_file(csv, filename) {
+      var encodedUri = encodeURI(csv);
+      var link = document.createElement("a");
+      link.setAttribute("href", encodedUri);
+      link.setAttribute("download", filename);
+      document.body.appendChild(link);
+
+      link.click();
+    }
+
     document.getElementById('parts').addEventListener('change', function (e) {
       let fr = new FileReader();
 
@@ -85,52 +114,47 @@ License: MIT
             document.getElementById('output-parts').textContent = 'Finished Processing';
             csv = "data:text/csv;charset=utf-8," + output.join('\n');
 
-            var encodedUri = encodeURI(csv);
-            var link = document.createElement("a");
-            link.setAttribute("href", encodedUri);
-            link.setAttribute("download", "fleetio-part-upload.csv");
-            document.body.appendChild(link);
-
-            link.click();
+            download_file(csv, "fleetio-part-upload.csv");
           }
         });
       }
 
       fr.readAsText(e.target.files[0]);
     })
-  // notes for analyzing the time from X hr Y mins
-  // /\d+/ <- regex for getting the numbers
-  // loop thru the record,
-  // res.map((e)=>{return Number(e.match(/\d/)[0])})
-  // actually, str.match(/\d+/g) gets all the numbers
-  // str.match(/\d+/g).map((e) => {return Number(e)})
-  // Math.round(minutes/15)*15 -> get minutes closest to 15
-  document.getElementById('timesheet').addEventListener('change', function (e) {
+
+    document.getElementById('timesheet').addEventListener('change', function (e) {
       let fr = new FileReader();
 
       fr.onload = () => {
         Papa.parse(fr.result, {
           header: true,
           complete: function(res) {
-            let headers = 'technician,date,vehicle,hours,minutes';
+            let headers = 'technician,date,vehicle,hours';
             let output = [];
             let csv = null;
 
             res.data.forEach((row) => {
               if (!!row['Technician']) {
-                  let duration = row['Duration']
+                let duration = row['Duration']
+                let time, minutes;
                 // need to account for just minutes
                 if(duration?.indexOf('hr') === -1) {
                   duration = '0 hr ' + duration;
                 }
 
-                let time = duration?.match(/\d+/g).map((e) => {
+                [time, minutes] = duration?.match(/\d+/g).map((e) => {
                   return Number(e);
                 });
 
-                if (time.length > 1) time[1] = minutes_calc(time[1]);
+                // if (time.length > 1) time[1] = minutes_calc(time[1]);
+                time += minutes_calc(minutes)
 
-                output.push(row['Technician'] + ',' + get_date(row['Started At']) +',' + row['Vehicle']+ ',' + time.join(','))
+                output.push(
+                  row['Technician'] + ',' +
+                  get_date(row['Started At']) + ',' +
+                  row['Vehicle']+ ',' +
+                  time
+                  );
                 console.log(row);
               }
             })
@@ -140,13 +164,7 @@ License: MIT
             document.getElementById('output-timesheet').textContent = 'Finished Processing';
             csv = "data:text/csv;charset=utf-8," + output.join('\n');
 
-            var encodedUri = encodeURI(csv);
-            var link = document.createElement("a");
-            link.setAttribute("href", encodedUri);
-            link.setAttribute("download", "timesheet-parsed.csv");
-            document.body.appendChild(link);
-
-            link.click();
+            download_file(csv, "timesheet-parsed.csv");
           }
         });
       }
