@@ -40,13 +40,12 @@ License: MIT
       <h3>
         Step 0: Download parts list from LA CAT by exporting as CSV (this is important, doing the other option will make the file UNREADABLE by this)<br>
         Step 1: Drag file to grayed area below. It will automatically download the processed file.<br>
-        Step 2: <a href="https://secure.fleetio.com/37d9a0bcb2/imports/new?type=part_import" target="_blank">https://secure.fleetio.com/37d9a0bcb2/imports/new?type=part_import</a> (This will open in a new tab)<br>
-        Step 4: Drag the downloaded file to Fleetio's drop zone<br>
+        Step 2: Go to this link <a href="https://secure.fleetio.com/37d9a0bcb2/imports/new?type=part_import" target="_blank">https://secure.fleetio.com/37d9a0bcb2/imports/new?type=part_import</a> (This will open in a new tab)<br>
+        Step 4: Drag the downloaded file from your downloads icon <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACUAAAAlCAYAAADFniADAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAANnSURBVFhHzZhLTxNRFMdPX3ToEyIUC+mDV4xuDAsXBmJiNLph5c7EuHTDB3Br/Aau/AZuDRuNCzHRBfGRGDeIiVCwQKWBNkwLJaW0zv9yZqDMdJjpA/wlkzn33Pbe/9zHuQ/H1NRUjf4znPz+r2iqpdxuN4VCIQqHQ9TV1SXSeEClUhFPuVymnZ0d5ZHp8PBQ5FnFlqhAIECRSEQRFGSPNQqFAm1uZqlYLLLHHEui/H4/RaOXhahWgKhM5i/t7u6yx5gzx1Q4HKaxsdGWBQGUgbJ6enrYY4ypqP7+PhoeTpLD4WBP66CsZDIhym5EQ1H409DQEKfaD8ru67vEqXoMRQWDQRoc7JwgFQjDLD6NTpTX6+UuY0cHQVcmEnGSJC97jtCJisVi5HSaDrW24nK5dL1SVzumfiDg55Q9njx9IZ5mQNzz+XycOiUKgfGiGBgYYOuEKHSZ3UjdTlA3uhJoorCOtTMe2QV1q0NHExUKhdm6ONTwoImSJIkt60Rj42zpMctrhCR1i7cmyuM52npY5eadBzT9cIZGr06w5xj4kHfj1jR7rKFq0ESpg8wq5f2SGAe3px9TfPQae0nY8CGvWq2w1xoej0e8XfF4/BmMSKTfVtDMpH+T0+Wkwfg4JcevK/bRRw1fmRAf+H3+HX379Fb4rFKtVimbzR63VKVib3cIvn58Qz++zJGbvxBAEHzIs4uqQRN1cHDAlj0+f5gVIlRgw9cMqgZN1L4yRs6i0VKiCmskyOoSpGrQRMlyga3mgJhmW0hF1aCJwv65Vru4IyBOPDhggLqDw8jIiOn692jmOfkCzUX+opynVy/FRDcER7FUKiVsraXAxsYGW8bMz8021ZqY6vPvX3NKD8rMZDKcMjhiJRIJ6u01P220m3w+T6urfzh1qqUAWgun2/MCYWB9vb6HdKLwo5WVlXMZ9KhjeTkljvkn0YkCe3slRf06pzoH6iiV9PHRUBTY2tqmtbW1jrQYykyn06IOIxqKAvgTmhezp12gq5aWlml7O8cePaaiAALawsJPUUgrjYb/5nI5Wlz8debti62roO5uiaLRqLZttYosy8qszihr2z57zHFMTk7a/n5sTxD5cSPT6NIMsxhRGhdnWELsHEocd+/fa/9IZjCga8p4rOKtCBP7JcU2F0j0D1bwU5waSEVIAAAAAElFTkSuQmCC" /> to Fleetio's drop zone<br>
         Step 5: Scroll all the way down to the button with the Green Check that says "Confirm 7 Matched"<br>
         Step 6: Click Continue to review<br>
         Step 7: Click process import (check the save mapping for future use to skip the mapping next time)<br>
         Note: if the part already exists, it will produce an error log detailing which parts were already in the system. This is expected.
-
       </h3>
       <input type="file" id="parts">
       <div id="output-parts"></div>
@@ -57,9 +56,14 @@ License: MIT
       <h2>Instructions:</h2>
       <h3>
         Step 1: Download Labor Time Entries List (Or Saved Daily) from Fleetio <br>
-        Step 2: Drag file to grayed area below. It will automatically download the processed file.<br>
-        Step 3: The output will be sorted by person, with the date, vehicle, and hours rounded to the nearest half hour.<br>
-        Note: It rounds 0-14 minutes down to the hour, 15-44 minutes to .5, and 45-59 as an additional hour
+        Step 2: Drag file to grayed area below from Downloads icon above <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACUAAAAlCAYAAADFniADAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAANnSURBVFhHzZhLTxNRFMdPX3ToEyIUC+mDV4xuDAsXBmJiNLph5c7EuHTDB3Br/Aau/AZuDRuNCzHRBfGRGDeIiVCwQKWBNkwLJaW0zv9yZqDMdJjpA/wlkzn33Pbe/9zHuQ/H1NRUjf4znPz+r2iqpdxuN4VCIQqHQ9TV1SXSeEClUhFPuVymnZ0d5ZHp8PBQ5FnFlqhAIECRSEQRFGSPNQqFAm1uZqlYLLLHHEui/H4/RaOXhahWgKhM5i/t7u6yx5gzx1Q4HKaxsdGWBQGUgbJ6enrYY4ypqP7+PhoeTpLD4WBP66CsZDIhym5EQ1H409DQEKfaD8ru67vEqXoMRQWDQRoc7JwgFQjDLD6NTpTX6+UuY0cHQVcmEnGSJC97jtCJisVi5HSaDrW24nK5dL1SVzumfiDg55Q9njx9IZ5mQNzz+XycOiUKgfGiGBgYYOuEKHSZ3UjdTlA3uhJoorCOtTMe2QV1q0NHExUKhdm6ONTwoImSJIkt60Rj42zpMctrhCR1i7cmyuM52npY5eadBzT9cIZGr06w5xj4kHfj1jR7rKFq0ESpg8wq5f2SGAe3px9TfPQae0nY8CGvWq2w1xoej0e8XfF4/BmMSKTfVtDMpH+T0+Wkwfg4JcevK/bRRw1fmRAf+H3+HX379Fb4rFKtVimbzR63VKVib3cIvn58Qz++zJGbvxBAEHzIs4uqQRN1cHDAlj0+f5gVIlRgw9cMqgZN1L4yRs6i0VKiCmskyOoSpGrQRMlyga3mgJhmW0hF1aCJwv65Vru4IyBOPDhggLqDw8jIiOn692jmOfkCzUX+opynVy/FRDcER7FUKiVsraXAxsYGW8bMz8021ZqY6vPvX3NKD8rMZDKcMjhiJRIJ6u01P220m3w+T6urfzh1qqUAWgun2/MCYWB9vb6HdKLwo5WVlXMZ9KhjeTkljvkn0YkCe3slRf06pzoH6iiV9PHRUBTY2tqmtbW1jrQYykyn06IOIxqKAvgTmhezp12gq5aWlml7O8cePaaiAALawsJPUUgrjYb/5nI5Wlz8debti62roO5uiaLRqLZttYosy8qszihr2z57zHFMTk7a/n5sTxD5cSPT6NIMsxhRGhdnWELsHEocd+/fa/9IZjCga8p4rOKtCBP7JcU2F0j0D1bwU5waSEVIAAAAAElFTkSuQmCC" />. It will automatically download the processed file.<br>
+        Step 3: Open Excel Online (Desktop Shortcut)<br>
+        Step 4: Drag the file from downloads window (titled timesheet-parsed) to Excel Online<br>
+        Step 5: Open Pacific<br>
+        Step 6: Configure windows by dragging them side by side to enter data in Pacific<br>
+
+        The output will be sorted by person, with the date, vehicle, and hours rounded to the nearest quarter hour.<br>
+        Note: It rounds 0-7 minutes down to the hour, 8-22 minutes to .25, 23-37 minutes to .5, 38-52 minutes to .75, and 53-59 as an additional hour
       </h3>
       <input type="file" id="timesheet">
       <div id="output-timesheet"></div>
@@ -67,7 +71,7 @@ License: MIT
   </body>
   <script>
     function minutes_calc(minutes) {
-      return Math.round(minutes/30)*0.5;
+      return Math.round(minutes/15)*0.25;
     }
 
     function get_date(str) {
@@ -129,7 +133,7 @@ License: MIT
         Papa.parse(fr.result, {
           header: true,
           complete: function(res) {
-            let headers = 'technician,date,vehicle,hours';
+            let headers = 'technician,date,vehicle,hours,notes';
             let output = [];
             let csv = null;
 
@@ -152,10 +156,10 @@ License: MIT
                 output.push(
                   row['Technician'] + ',' +
                   get_date(row['Started At']) + ',' +
-                  row['Vehicle']+ ',' +
-                  time
+                  row['Vehicle'] + ',' +
+                  time + ','+
+                  row['Notes']
                   );
-                console.log(row);
               }
             })
             output.sort();
