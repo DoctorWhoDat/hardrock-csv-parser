@@ -78,8 +78,15 @@ License: MIT
       return str.match(/\d{1,2}\/\d{1,2}\/\d{4}/)[0];
     }
 
+    function current_time() {
+      let time = new Date().toTimeString().match(/\d{1,2}:\d{1,2}/)[0].split(':');
+      let hours = Number(time[0]) % 12 || 12;
+
+      return hours + ':' + time[1];
+    }
+
     function download_file(csv, filename) {
-      var encodedUri = encodeURI(csv);
+      var encodedUri = "data:text/csv;charset=utf-8," + encodeURIComponent("\uFEFF" + csv.join('\n'));
       var link = document.createElement("a");
       link.setAttribute("href", encodedUri);
       link.setAttribute("download", filename);
@@ -115,10 +122,8 @@ License: MIT
               }
             })
 
-            document.getElementById('output-parts').textContent = 'Finished Processing';
-            csv = "data:text/csv;charset=utf-8," + output.join('\n');
-
-            download_file(csv, "fleetio-part-upload.csv");
+            document.getElementById('output-parts').textContent = 'Finished Processing at ' + current_time();
+            download_file(output, "fleetio-part-upload.csv");
           }
         });
       }
@@ -165,10 +170,8 @@ License: MIT
             output.sort();
             output.unshift(headers);
 
-            document.getElementById('output-timesheet').textContent = 'Finished Processing';
-            csv = "data:text/csv;charset=utf-8," + output.join('\n');
-
-            download_file(csv, "timesheet-parsed.csv");
+            document.getElementById('output-timesheet').textContent = 'Finished Processing at ' + current_time();
+            download_file(output, "timesheet-parsed.csv");
           }
         });
       }
